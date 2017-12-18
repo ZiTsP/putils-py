@@ -117,7 +117,7 @@ class ConvExport():
         _ext_out = '.csv'
         if not path.exists(from_path):
             raise(FileNotFoundError)
-        _to_path = re.sub(_ext_in, _ext_out, from_path) if to_path is None else to_path
+        _to_path = re.sub(_ext_in + r'$', _ext_out, from_path) if to_path is None else to_path
         if not from_path.endswith(_ext_in) or not _to_path.endswith(_ext_out):
             raise(Exception('extension of input does not assure correct file type'))
         _from_dict = Json.read_json2dict(from_path)
@@ -130,7 +130,7 @@ class ConvExport():
         _ext_out = '.json'
         if not path.exists(from_path):
             raise(FileNotFoundError)
-        _to_path = re.sub(_ext_in, _ext_out, from_path) if to_path is None else to_path
+        _to_path = re.sub(_ext_in + r'$', _ext_out, from_path) if to_path is None else to_path
         if not from_path.endswith(_ext_in) or not _to_path.endswith(_ext_out):
             raise(Exception('extension of input does not assure correct file type'))
         _json_dict = Json.read_json2dict(_to_path) if add is True and path.exists(_to_path) else {}
