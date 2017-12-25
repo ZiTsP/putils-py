@@ -150,11 +150,12 @@ class Extract():
     
     @staticmethod
     def unzip(path_, to_dir=None, overrdie=False, errskip=True):
+        print('unzip')
         if not path.exists(path_):
             if errskip:
                 return
             raise(FileNotFoundError)
-        if not path.isdir(path_):
+        if path.isdir(path_):
             if errskip:
                 return
             raise(IsADirectoryError)
