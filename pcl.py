@@ -21,14 +21,14 @@ import os.path as path
 import shutil
 import subprocess
 
-from putils import pcc
-from putils import ptime
-from putils import putil
-from putils.pfile import Paths
+from . import pcc
+from . import ptime
+from . import putil
+from .pfile import Paths
 
 
 PATH_HERE = './'
-        
+
 DEBUG = True
 
 def exe_cmd(cmd, execute_dir=None, sub_cmd=None, **opts):
@@ -121,14 +121,14 @@ class Commands():
                 to_path = path.join(to_dir, Paths.get_filename(from_path))
             if not path.exists(to_dir):
                 Commands.mkdir(to_dir, recursive=True)
-            shutil.copyfile(from_path, to_path)        
-        else:           
+            shutil.copyfile(from_path, to_path)
+        else:
             if path.exists(to_path):
                 raise(FileExistsError)
             shutil.copytree(from_path, to_path)
         Logger.print_cmd(('cp', from_path, to_path), dopts)
-    
-        
+
+
 class Logger():
 
     ERR_COLOR = pcc.SGRParameters.FONT_RED

@@ -7,7 +7,7 @@ Created on Nov 15, 2017
 from collections.abc import Iterable as iter
 import uuid
 
-from putils import ptime
+from . import ptime
 
 def flatten2list(*somethings, **opt):
     trim = opt.get('trim', False)
@@ -32,7 +32,7 @@ def gen_randname():
 
 
 class Verify():
-    
+
     @staticmethod
     def is_iterable(obj):
         return True if isinstance(obj, iter) and not isinstance(obj, str) else False
@@ -53,7 +53,7 @@ class DictInDict():
             return m_dict
         else:
             return {parent_key : {child_key : value} for parent_key, value in parentkey_value_tuple}
-    
+
     @staticmethod
     def merge(*key_dict_iter):
         if len(key_dict_iter) <=1:
@@ -87,7 +87,7 @@ class DictInDict():
         keys = flatten2list(succeed_keys)
         return {parent_key : {k:value_dict[k] for k in keys if k in value_dict
             } for parent_key, value_dict in dict_dict.items()}
-            
+
 class ListInDict():
     @staticmethod
     def update_from_tuplelist(parentkey_value_tuples, list_in_dict=None):
@@ -100,7 +100,7 @@ class ListInDict():
             else:
                 m_dict[parent_key] = [value]
         return m_dict
-    
+
     @staticmethod
     def merge(*key_list_iter):
         if len(key_list_iter) <=1:
@@ -132,16 +132,16 @@ class ListInDict():
 
 
 class StringMatch():
-    
+
     def __init__(self, delimiter=''):
         self.delimiter = delimiter
-    
+
     def forward(self, *str_list):
         return StringMatch.forward_match(str_list, self.delimiter)
-    
+
     def backward(self, *str_list):
         return StringMatch.backward_match(str_list, self.delimiter)
-    
+
     @staticmethod
     def forward_match(str_list, delimiter=''):
         _list = flatten2list(str_list)
@@ -156,7 +156,7 @@ class StringMatch():
                 return delimiter.join(dlist[0][:i])
         min_len = min([len(e) for e in dlist])
         return delimiter.join(dlist[0][:min_len])
-        
+
     @staticmethod
     def backward_match(str_list, delimiter=''):
         _list = flatten2list(str_list)
@@ -172,5 +172,3 @@ class StringMatch():
                 return delimiter.join(dlist[0][-i:])
         min_len = min([len(e) for e in dlist])
         return delimiter.join(dlist[0][-min_len:])
-
-        

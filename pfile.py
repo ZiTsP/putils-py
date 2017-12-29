@@ -10,8 +10,8 @@ import shutil
 import zipfile
 
 import os.path as path
-from putils import putil
-from putils.pencode import CommonEncoding
+from . import putil
+from .pencode import CommonEncoding
 
 
 def mkdir(path_, **opts):
@@ -19,7 +19,7 @@ def mkdir(path_, **opts):
     dopts = opts.get('dopts', {})
     dopts.update(opts)
     Commands.mkdir(path_, dopts=dopts)
-    
+
 def chmod(path_, chmod_, **opts):
     from putils.pcl import Commands
     dopts = opts.get('dopts', {})
@@ -34,15 +34,15 @@ def cp(from_path, to_path, **opts):
 
 class Find():
 
-    @staticmethod    
+    @staticmethod
     def files(rootdir, recursive=True):
         return [f for f in Find.find(rootdir, '*',recursive=recursive) if path.isfile(f)]
-    
-    @staticmethod    
+
+    @staticmethod
     def subdirs(rootdir, recursive=True):
         return [f for f in Find.find(rootdir, '*',recursive=recursive) if path.isdir(f)]
-    
-    @staticmethod    
+
+    @staticmethod
     def find(rootdir, *expression, recursive=True):
         files = set()
         if rootdir is None or path.exists(rootdir) is False:
@@ -51,13 +51,13 @@ class Find():
             exp = path.join(rootdir if recursive is False else path.join(rootdir, '**'), e)
             files.update(glob.glob(exp, recursive=recursive))
         return list(files)
-    
+
 class Paths():
-    
-    @staticmethod    
+
+    @staticmethod
     def get_abspath(path_):
         return Paths.to_absolute(path_)
-    
+
     @staticmethod
     def get_dirname(path_):
         _path = Paths.get_abspath(path_)
@@ -65,27 +65,27 @@ class Paths():
             return _path
         else:
             return path.dirname(_path)
-    
+
     @staticmethod
     def get_filename(path_):
         return path.split(path_)[1]
-    
+
     @staticmethod
     def get_parentname(path_):
         return path.split(path.split(path_)[0])[0]
-    
+
     @staticmethod
     def split_name_and_ext(path_):
         return (path.splitext(path.split(path_)[1]))
-    
+
     @staticmethod
     def split_name(path_):
         return Paths.split_name_and_ext(path_)[0]
-    
+
     @staticmethod
     def split_ext(path_):
         return path.splitext(path_)[1]
-    
+
     @staticmethod
     def to_relative(from_path, to_path):
         from_tree = path.abspath(from_path).split('/')
@@ -102,17 +102,17 @@ class Paths():
         re_path += '../' * diff_len[0]
         re_path += '/'.join(to_tree[-diff_len[1]:]) if diff_len[1] is not 0 else ''
         return re_path
-        
+
     @staticmethod
     def to_absolute(path_):
         return path.abspath(path_)
-    
+
     @staticmethod
     def is_same_path(path_a, path_b):
         _a = path.abspath(path_a)
         _b = path.abspath(path_b)
         return _a == _b
-    
+
     @staticmethod
     def is_diff_path(path_a, path_b):
         return not Paths.is_same_path(path_a, path_b)
@@ -127,9 +127,9 @@ class Paths():
             return True
         else:
             return False
- 
+
 class Readers():
-    
+
     @staticmethod
     def read_lines(filepath, enc=CommonEncoding.UTF_8):
         if enc is None:
@@ -140,14 +140,14 @@ class Readers():
                 return strs
         except UnicodeDecodeError:
             return Readers.read_lines(filepath, enc=enc.next_common())
-    
-    @staticmethod    
+
+    @staticmethod
     def read_asbytes(filepath):
         with open(filepath, 'rb') as bf:
             return [b for b in bf.read()]
 
 class Extract():
-    
+
     @staticmethod
     def unzip(path_, to_dir=None, overrdie=False, errskip=True):
         print('unzip')
@@ -183,7 +183,7 @@ class Extract():
             if errskip:
                 return
             raise(err)
-    
+
     @staticmethod
     def unjar(path_, to_dir=None, overrdie=False, errskip=True):
         if not path.splitext(path_)[1] == '.jar':
@@ -191,6 +191,6 @@ class Extract():
                 return
             raise(Extract.BadJarFile("not '*.jar' file"))
         Extract.unzip(path_, to_dir=to_dir, overrdie=overrdie, errskip=errskip)
-        
+
     class BadJarFile(Exception):
         pass
