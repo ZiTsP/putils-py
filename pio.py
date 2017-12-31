@@ -80,15 +80,15 @@ class Csv():
 class Files():
 
     @staticmethod
-    def read_lines(filepath, enc=CommonEncoding.UTF_8):
+    def read_lines(filepath, enc=CommonEncoding.UTF_8, trim=True):
         if enc is None:
             raise UnicodeDecodeError
         try:
             with open(filepath, 'r', encoding=enc.encode()) as tf:
-                strs = [line for line in tf]
+                strs = [line.strip() if trim else line for line in tf]
                 return strs
         except UnicodeDecodeError:
-            return Files.read_lines(filepath, enc=enc.next_common())
+            return Files.read_lines(filepath, enc=enc.next_common(), trim=trim)
 
     @staticmethod
     def write_lines(lines_, path_, override=True, enc=CommonEncoding.UTF_8):
